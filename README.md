@@ -2,7 +2,7 @@
 
 A python module to convert DirectX9 shader bytecode to GLSL. 
 
-Them main conversion is done using a *ctypes* wrapper around [MojoShader's](https://icculus.org/mojoshader/) parse function.
+The main conversion is done using a *ctypes* wrapper around [MojoShader's](https://icculus.org/mojoshader/) parse function.
 
 ## Supported Formats
 - ShaderModel 1.0 - 3.0
