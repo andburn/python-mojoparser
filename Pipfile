@@ -5,5 +5,9 @@ name = "pypi"
 
 
 [dev-packages]
+
 pytest = "*"
 "e1839a8" = {path = ".", editable = true}
+[packages]
+"e1839a8" = {path = ".", editable = true}
+pytest = "*"
