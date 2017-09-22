@@ -5,18 +5,6 @@ from enum import Enum
 from .mojoshader import *
 
 
-class LibraryNotFoundException(OSError):
-	pass
-
-
-class ParseFailureError(Exception):
-	pass
-
-
-class ProfileNotSupportedError(Exception):
-	pass
-
-
 def load_lib(*names):
 	for name in names:
 		libname = ctypes.util.find_library(name)
