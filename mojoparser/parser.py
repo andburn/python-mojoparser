@@ -5,6 +5,18 @@ from enum import Enum
 from .mojoshader import *
 
 
+class LibraryNotFoundException(OSError):
+	pass
+
+
+class ParseFailureError(Exception):
+	pass
+
+
+class ProfileNotSupportedError(Exception):
+	pass
+
+
 def load_lib(*names):
 	for name in names:
 		libname = ctypes.util.find_library(name)
@@ -19,6 +31,7 @@ def load_lib(*names):
 class Profile(Enum):
 	GLSL110 = "glsl"
 	GLSL120 = "glsl120"
+	D3D = "d3d"
 
 
 class Parser:
@@ -44,7 +57,7 @@ class Parser:
 		return self.lib.MOJOSHADER_parse
 
 	def parse(self, data, profile=Profile.GLSL110):
-		if profile != Profile.GLSL110 and profile != Profile.GLSL120:
+		if profile != Profile.GLSL110 and profile != Profile.GLSL120 and profile != Profile.D3D:
 			raise ProfileNotSupportedError("{} is not a supported profile".format(profile))
 		parse_data = self.mojo_parse(
 				profile.value.encode("ascii"), b'main', data, len(data),
