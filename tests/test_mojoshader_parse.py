@@ -13,7 +13,7 @@ def read_data(file, mode="rb"):
 @pytest.fixture
 def parse_data():
 	p = Parser()
-	return p.parse(read_data("shader.bin"))
+	return p.parse(read_data("shader.bin"), Profile.GLSL120)
 
 
 def test_error_count(parse_data):
@@ -22,10 +22,6 @@ def test_error_count(parse_data):
 
 def test_profile(parse_data):
 	assert parse_data.profile == b"glsl"
-
-
-def test_shader_output_length(parse_data):
-	assert parse_data.output_len == 1038
 
 
 def test_instruction_count(parse_data):

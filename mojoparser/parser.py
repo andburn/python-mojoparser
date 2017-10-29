@@ -6,15 +6,25 @@ from .mojoshader import *
 
 
 class LibraryNotFoundException(OSError):
-	pass
+	"""Raise when MojoShader library cannot be found on the system"""
 
 
 class ParseFailureError(Exception):
-	pass
+	"""Raise when MojoShader parse returns errors"""
+	def __init__(self, message, count, errors):
+		self.message = message
+		self.count = count
+		self.errors = []
+		for i in range(count):
+			self.errors.append(errors[i].error.decode())
+		super().__init__(message)
+
+	def __repr__(self):
+		return self.message
 
 
 class ProfileNotSupportedError(Exception):
-	pass
+	"""Raise when an unsupported output profile is given the parse method"""
 
 
 def load_lib(*names):
@@ -57,13 +67,20 @@ class Parser:
 		return self.lib.MOJOSHADER_parse
 
 	def parse(self, data, profile=Profile.GLSL110):
-		if profile != Profile.GLSL110 and profile != Profile.GLSL120 and profile != Profile.D3D:
+		if (profile != Profile.GLSL110
+			and profile != Profile.GLSL120
+			and profile != Profile.D3D
+		):
 			raise ProfileNotSupportedError("{} is not a supported profile".format(profile))
+
 		parse_data = self.mojo_parse(
 				profile.value.encode("ascii"), b'main', data, len(data),
 				None, 0, None, 0, None, None, None).contents
+
 		if parse_data.error_count > 0:
-			# TODO show all errors, not just first
-			raise ParseFailureError("MojoShader parse failed: {}".format(
-					parse_data.errors[0].error))
+			raise ParseFailureError(
+				"MojoShader Parse Failure ({})".format(parse_data.error_count),
+				parse_data.error_count,
+				parse_data.errors
+			)
 		return parse_data
