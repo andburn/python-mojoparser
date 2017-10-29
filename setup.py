@@ -5,7 +5,7 @@ from setuptools import find_packages, setup
 
 setup(
     name='mojoparser',
-    version='0.1.0',
+    version='0.1.1',
     author='andburn',
     url='https://github.com/andburn/python-mojoparser',
     packages=find_packages(exclude=('tests',)),
